@@ -1,0 +1,68 @@
+name: Release (single EXE)
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build and publish single EXE
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Publish single-file EXE (win-x64)
+        run: |
+          rm -Recurse -Force ./artifacts || true
+          dotnet publish MigrationBrowser.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -o ./artifacts/publish --no-build
+
+      - name: Zip artifact
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $zip = "artifacts/MigrationBrowser-$tag-win-x64.zip"
+          if (Test-Path $zip) { Remove-Item $zip -Force }
+          Compress-Archive -Path ./artifacts/publish/* -DestinationPath $zip -Force
+          Write-Host "Zip created: $zip"
+        env:
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: ${{ github.ref_name }}
+          body: |
+            Release ${{ github.ref_name }} - single-file Windows EXE (win-x64)
+          draft: false
+          prerelease: false
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/MigrationBrowser-${{ github.ref_name }}-win-x64.zip
+          asset_name: MigrationBrowser-${{ github.ref_name }}-win-x64.zip
+          asset_content_type: application/zip
