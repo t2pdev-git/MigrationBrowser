@@ -1,5 +1,6 @@
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace MigrationBrowser
@@ -7,7 +8,8 @@ namespace MigrationBrowser
     /// <summary>
     /// Manages all registry-related operations for MigrationBrowser.
     /// </summary>
-    internal class RegistryManager
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
+    internal class RegistryManager : IRegistryManager
     {
         private const string UrlPatternsKey = @"Software\MigrationBrowser\UrlPatterns";
         private const string EdgeAppPathKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe";
@@ -64,30 +66,29 @@ namespace MigrationBrowser
             var list = new List<string>();
             try
             {
-                using var key = Registry.CurrentUser.OpenSubKey(UrlPatternsKey);
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(UrlPatternsKey);
                 if (key != null)
                 {
                     foreach (string name in key.GetValueNames())
                     {
                         string? val = key.GetValue(name) as string;
-                        if (!string.IsNullOrWhiteSpace(val))
+                        if (string.IsNullOrWhiteSpace(val)) continue;
+                        
+                        string pattern = val.Trim();
+                        // Validate regex pattern before adding
+                        try
                         {
-                            string pattern = val.Trim();
-                            // Validate regex pattern before adding
-                            try
-                            {
-                                // Test pattern with timeout to ensure it's valid and not catastrophic
-                                new Regex(pattern, RegexOptions.None, TimeSpan.FromMilliseconds(10));
-                                list.Add(pattern);
-                            }
-                            catch (ArgumentException)
-                            {
-                                // Skip invalid regex patterns
-                            }
-                            catch (RegexMatchTimeoutException)
-                            {
-                                // Skip patterns that are too complex
-                            }
+                            // Test pattern with timeout to ensure it's valid and not catastrophic
+                            new Regex(pattern, RegexOptions.None, TimeSpan.FromMilliseconds(10));
+                            list.Add(pattern);
+                        }
+                        catch (ArgumentException)
+                        {
+                            // Skip invalid regex patterns
+                        }
+                        catch (RegexMatchTimeoutException)
+                        {
+                            // Skip patterns that are too complex
                         }
                     }
                 }

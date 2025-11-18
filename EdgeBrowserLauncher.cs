@@ -3,20 +3,20 @@ using System.Diagnostics;
 namespace MigrationBrowser
 {
     /// <summary>
-    /// Handles launching Microsoft Edge browser with specified arguments.
+    /// Handles launching processes with specified arguments.
     /// </summary>
-    internal class EdgeBrowserLauncher
+    internal class ProcessLauncher : IProcessLauncher
     {
         /// <summary>
-        /// Launches Microsoft Edge with the specified arguments.
+        /// Launches a process with the specified executable path and arguments.
         /// </summary>
-        /// <param name="edgePath">The path to the Edge executable.</param>
-        /// <param name="arguments">The command-line arguments to pass to Edge.</param>
-        public void Launch(string edgePath, string arguments)
+        /// <param name="executablePath">The path to the executable.</param>
+        /// <param name="arguments">The command-line arguments to pass to the process.</param>
+        public void Launch(string executablePath, string arguments)
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = edgePath,
+                FileName = executablePath,
                 Arguments = arguments,
                 UseShellExecute = true
             });

@@ -6,7 +6,7 @@ namespace MigrationBrowser
     /// <summary>
     /// Handles user interaction operations including message boxes and system settings.
     /// </summary>
-    internal class UserInteraction
+    internal class UserInteraction : IUserInteraction
     {
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
