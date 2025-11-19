@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\MigrationBrowser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MigrationBrowser.csproj" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>
