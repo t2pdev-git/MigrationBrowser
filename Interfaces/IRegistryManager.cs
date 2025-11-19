@@ -1,4 +1,4 @@
-namespace MigrationBrowser
+namespace MigrationBrowser.Interfaces
 {
     /// <summary>
     /// Abstraction for registry-related operations to enable testing.

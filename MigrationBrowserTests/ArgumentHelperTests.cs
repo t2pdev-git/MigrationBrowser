@@ -1,4 +1,4 @@
-using MigrationBrowser;
+using MigrationBrowser.Implementations;
 using Shouldly;
 
 namespace MigrationBrowserTests

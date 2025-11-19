@@ -1,4 +1,5 @@
-using MigrationBrowser;
+using MigrationBrowser.Implementations;
+using MigrationBrowser.Interfaces;
 using NSubstitute;
 using Shouldly;
 

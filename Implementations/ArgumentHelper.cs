@@ -1,4 +1,4 @@
-namespace MigrationBrowser
+namespace MigrationBrowser.Implementations
 {
     /// <summary>
     /// Provides utility methods for handling command-line arguments.

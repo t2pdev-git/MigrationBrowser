@@ -1,4 +1,6 @@
-namespace MigrationBrowser
+using MigrationBrowser.Interfaces;
+
+namespace MigrationBrowser.Implementations
 {
     /// <summary>
     /// Orchestrates the application flow by delegating to specialized components.

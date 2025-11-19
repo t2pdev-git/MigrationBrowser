@@ -1,6 +1,7 @@
+using MigrationBrowser.Interfaces;
 using System.Diagnostics;
 
-namespace MigrationBrowser
+namespace MigrationBrowser.Implementations
 {
     /// <summary>
     /// Handles launching processes with specified arguments.

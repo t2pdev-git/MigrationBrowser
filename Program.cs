@@ -1,4 +1,7 @@
-﻿namespace MigrationBrowser
+﻿using MigrationBrowser.Implementations;
+using MigrationBrowser.Interfaces;
+
+namespace MigrationBrowser
 {
     /// <summary>
     /// Main entry point for MigrationBrowser application.

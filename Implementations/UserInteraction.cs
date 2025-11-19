@@ -1,7 +1,8 @@
+using MigrationBrowser.Interfaces;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace MigrationBrowser
+namespace MigrationBrowser.Implementations
 {
     /// <summary>
     /// Handles user interaction operations including message boxes and system settings.

@@ -1,4 +1,4 @@
-namespace MigrationBrowser
+namespace MigrationBrowser.Interfaces
 {
     /// <summary>
     /// Abstraction for user interaction operations to enable testing.

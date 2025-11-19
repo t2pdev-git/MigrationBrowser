@@ -1,9 +1,10 @@
 using Microsoft.Win32;
+using MigrationBrowser.Interfaces;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-namespace MigrationBrowser
+namespace MigrationBrowser.Implementations
 {
     /// <summary>
     /// Manages all registry-related operations for MigrationBrowser.

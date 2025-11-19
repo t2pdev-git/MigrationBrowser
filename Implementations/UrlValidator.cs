@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace MigrationBrowser
+namespace MigrationBrowser.Implementations
 {
     /// <summary>
     /// Handles URL validation and pattern matching operations.
