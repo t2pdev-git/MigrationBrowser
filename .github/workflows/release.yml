@@ -21,17 +21,16 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Publish single-file EXE (win-x64)
+        shell: pwsh
         run: |
           if (Test-Path ./artifacts) { Remove-Item -Recurse -Force ./artifacts }
-          mkdir ./artifacts/publish
-          dotnet publish src/MigrationBrowser.csproj ^
-            -c Release ^
-            -r win-x64 ^
-            --self-contained true ^
-            -p:PublishSingleFile=true ^
-            -p:PublishTrimmed=false ^
-            -p:IncludeNativeLibrariesForSelfExtract=true ^
-            -p:IncludeAllContentForSelfExtract=true ^
+          New-Item -ItemType Directory -Path ./artifacts/publish -Force | Out-Null
+      
+          dotnet publish src/MigrationBrowser.csproj -c Release -r win-x64 --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:PublishTrimmed=false `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:IncludeAllContentForSelfExtract=true `
             -o ./artifacts/publish
 
       - name: Create ZIP package
